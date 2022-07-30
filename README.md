@@ -1,5 +1,5 @@
 # Description
-Transfers files from client to server.
+Transfers files from client to server. Requires both client and server to be on the same network.
 
 ---
 # Dev

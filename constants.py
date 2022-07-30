@@ -1,1 +1,3 @@
-SAVE_FOLDER= "./transferred_files"
+SERVER_HOST="0.0.0.0"
+SERVER_PORT = 8000
+SAVE_FOLDER="./transferred_files"
