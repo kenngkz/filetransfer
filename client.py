@@ -35,6 +35,8 @@ def send_file(root_url, filepath):
     file = {'file': open(filepath, 'rb')}
     payload = {"parent_dir":os.path.dirname(filepath)}
     response = requests.post(url=url, files=file, data=payload)
+    if response.status_code == 200:
+        print(response.json()["message"])
     print(response.json())
 
 def send_item(root_url, path):
