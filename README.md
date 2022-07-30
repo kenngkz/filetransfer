@@ -5,3 +5,7 @@ Transfers files from client to server. Requires both client and server to be on 
 # Dev
 #### run server
 uvicorn server:app --reload
+
+can add progress bar? (tqdm)
+
+dockerize

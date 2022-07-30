@@ -3,3 +3,4 @@ test_data
 __pycache__
 test.py
 transferred_files
+.DS_Store

@@ -13,9 +13,6 @@ if not os.path.exists(SAVE_FOLDER):
     os.makedirs(SAVE_FOLDER)
 os.chdir(SAVE_FOLDER)
 
-class Data(BaseModel):
-    parent_dir: str | None = "."
-
 @app.get("/")
 def root():
     ''' Returns a welcome message '''
@@ -27,15 +24,15 @@ def ping():
     return {"reply": "ping!"}
 
 @app.post("/upload/")
-async def upload_file(file:UploadFile = File(...), data:str=Form(...)):
+async def upload_file(file:UploadFile = File(...), parent_dir:str = Form(...)):
     ''' Receive files from client and save locally in the server '''
-    if not os.path.exists(data.parent_dir):
-        os.makedirs(data.parent_dir)
+    if not os.path.exists(parent_dir):
+        os.makedirs(parent_dir)
 
     # load file contents and write to file with the same name
     try:
         contents = await file.read()
-        with open(path_join(data.parent_dir, file.filename), "wb") as f:
+        with open(path_join(parent_dir, file.filename), "wb") as f:
             f.write(contents)
     except Exception as e:
         return {"message": f"There was an error while uploading the file. Filename: {file.filename}",
@@ -43,7 +40,7 @@ async def upload_file(file:UploadFile = File(...), data:str=Form(...)):
     finally:
         await file.close()
 
-    return {"message": f"File {file.filename} uploaded successfully to {path_join(data.parent_dir, file.filename)}"}
+    return {"message": f"File {file.filename} uploaded successfully to {path_join(parent_dir, file.filename)}"}
 
 if __name__ == '__main__':
     # private ip address
