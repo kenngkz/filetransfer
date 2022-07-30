@@ -1,3 +1,5 @@
+''' API for server - recieving files '''
+
 import uvicorn
 from fastapi import FastAPI, File, UploadFile, Form
 import os
@@ -42,23 +44,17 @@ async def upload_file(file:UploadFile = File(...), parent_dir:str = Form(...)):
 
     return {"message": f"File {file.filename} uploaded successfully to {path_join(parent_dir, file.filename)}"}
 
-if __name__ == '__main__':
+def main():
     # private ip address
     import socket
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     try:    
         s.connect(("8.8.8.8", 80))
-        print(f"[+] Server running on private ip address {s.getsockname()[0]} and port {SERVER_PORT}  - discoverable only by any device on the same network")
+        print(f"[+] Server running on private ip address {s.getsockname()[0]} and port {SERVER_PORT} - discoverable only by any device on the same network")
         s.close()
     except Exception as e:
         print(f"Error occured while attempting to retrieve private ip_address: {e}\nServer may not be accessible from other machines.")
-
-    # public ip address
-    from requests import get
-    try:
-        ip = get('https://api.ipify.org').content.decode('utf8')
-        print(f"[+] Server running on public ip address {ip} and port {SERVER_PORT}  - discoverable by any device in the internet(?)")
-    except Exception as e:
-        print(f"Error occured while attempting to retrieve public ip_address: {e}\nServer may not be accessible from other machines.")
-
     uvicorn.run(app, host=SERVER_HOST, port=SERVER_PORT)
+
+if __name__ == "__main__":
+    main()
