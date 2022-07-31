@@ -31,7 +31,7 @@ def home():
 def send(path:str = Form(...)):
     if not os.path.exists(path):
         return {"message": "There was an error while selecting file to send", "error": f"Path {path} does not exist"}
-    responses = send_item(root_url, path)
+    responses = [resp.json() for resp in send_item(root_url, path)]
     if sum([resp["status"] != "Success" for resp in responses]) == 0:
         return {"status":"Success", "message":"All files successfully sent."}
     else:

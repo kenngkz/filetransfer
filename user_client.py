@@ -35,7 +35,7 @@ def main():
         if path:
             responses = send_item(root_url, path)
             for resp in responses:
-                print(resp["message"])
+                print(resp.json()["message"])
         else:
             break
 

@@ -19,19 +19,18 @@ def send_file(root_url, filepath):
     file = {'file': open(filepath, 'rb')}
     payload = {"parent_dir":os.path.dirname(filepath)}
     response = requests.post(url=url, files=file, data=payload)
-    if response.status_code == 200:
-        return response.json()["message"]
-    else:
-        return response.json()
+    return response
 
 def send_item(root_url, path):
     ''' Recursively send a file or folder to server. '''
+    responses = []
     if os.path.isfile(path):
-        yield send_file(root_url, path)
+        responses.append(send_file(root_url, path))
     else:
         contents = os.listdir(path)
         for item in contents:
             if os.path.isfile(path_join(path, item)):
-                yield send_file(root_url, path_join(path, item))
+                responses.append(send_file(root_url, path_join(path, item)))
             else:
-                yield send_item(root_url, path_join(path, item))
+                responses += send_item(root_url, path_join(path, item))
+    return responses
