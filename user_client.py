@@ -33,7 +33,9 @@ def main():
     while True:
         path = user_select()
         if path:
-            send_item(root_url, path)
+            responses = send_item(root_url, path)
+            for resp in responses:
+                print(resp["message"])
         else:
             break
 

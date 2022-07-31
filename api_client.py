@@ -27,11 +27,18 @@ def home():
         "endpoint": {"relative_url": "/send", "required_data":{"path":"str"}}
     }
 
-@app.get("/send")
+@app.post("/send")
 def send(path:str = Form(...)):
     if not os.path.exists(path):
         return {"message": "There was an error while selecting file to send", "error": f"Path {path} does not exist"}
-    send_item(root_url, path)
+    responses = send_item(root_url, path)
+    if sum([resp["status"] != "Success" for resp in responses]) == 0:
+        return {"status":"Success", "message":"All files successfully sent."}
+    else:
+        r = {resp["filename"]:resp for resp in responses}
+        r["status"] = "Error"
+        return r
+        
     
 def get_shell_args():
     '''

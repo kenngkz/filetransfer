@@ -11,9 +11,9 @@ Valid values:
 2. "S" : API for sending files
 3. "US": text user interface for sending files 
 
-After that, run `python3 main.py`.
+After that, run `python main.py` if R or US, or `python main.py --ip <SERVER_PRIVATE_IP> --port <SERVER_PORT>`
 
 ---
 # Dev
-#### run server
-uvicorn server:app --reload
+#### TODO
+test on windows laptop

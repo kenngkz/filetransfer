@@ -23,7 +23,7 @@ def root():
 @app.get("/ping")
 def ping():
     ''' Returns a ping '''
-    return {"reply": "ping!"}
+    return {"message": "ping!"}
 
 @app.post("/upload/")
 async def upload_file(file:UploadFile = File(...), parent_dir:str = Form(...)):
@@ -38,11 +38,15 @@ async def upload_file(file:UploadFile = File(...), parent_dir:str = Form(...)):
             f.write(contents)
     except Exception as e:
         return {"message": f"There was an error while uploading the file. Filename: {file.filename}",
-                "error": str(e)}
+                "error": str(e),
+                "status":"Error"}
     finally:
         await file.close()
 
-    return {"message": f"File {file.filename} uploaded successfully to {path_join(parent_dir, file.filename)}"}
+    return {"status":"Success",
+        "message": f"File {file.filename} uploaded successfully to {path_join(parent_dir, file.filename)}",
+        "filename":file.filename,
+        "destination":path_join(parent_dir, file.filename)}
 
 def main():
     # private ip address
